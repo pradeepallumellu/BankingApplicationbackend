@@ -19,7 +19,7 @@ const userFieldsSchema = new mongoose.Schema({
     },
     DOB: {
         type: Date,
-        required: false,
+        required: true,
     },
     email: {
         type: String,
@@ -43,7 +43,7 @@ const userFieldsSchema = new mongoose.Schema({
     },
     checkbox: {
         type: Boolean,
-        required: true
+        default: true
     },
 });
 

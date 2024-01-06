@@ -10,12 +10,12 @@ db.once("open", function () {
     console.log("Connected successfully to Mongo DB RegistrationServices");
 });
 
-function Id(){
-    var x=uuidv4();
+function Id() {
+    var x = uuidv4();
     return x;
 }
 
-  async function Userfields(request) {
+async function SaveRegistrationForm(request) {
     const userid = Id();
     const Fname = request.body.firstname;
     const Lname = request.body.lastname;
@@ -26,7 +26,7 @@ function Id(){
     const cty = request.body.country;
     const check = request.body.checkbox;
     const name = request.body.username;
-    const pwd=request.body.password;
+    const pwd = request.body.password;
 
     const userFields = new userSchema({
         firstname: Fname,
@@ -39,16 +39,33 @@ function Id(){
         mobileno: phno,
         country: cty,
         checkbox: check,
-        password:pwd,
+        password: pwd,
     });
-   
-        const newUser = await userFields.save();
-        //const allUsers = await userSchema.find({});
-        return newUser;
-    }
 
-   async function test(){
-        const userget = await userSchema.find({});
-        return userget;
+    const newUser = await userFields.save();
+    return newUser;
+}
+
+async function GetAllRegistrationDocuments() {
+    const regDocuments = await userSchema.find({});
+    return regDocuments;
+}
+
+async function GetRegistrationFormDocumentFromUsername(userNameFromClient) {
+    const regDocument = await userSchema.findOne({ username: userNameFromClient });
+    return regDocument;
+}
+
+async function GetRegistrationusername(clientusername) {
+    var usernameexists=await userSchema.exists({ username: clientusername });
+    console.log(usernameexists);
+       if(usernameexists){
+        return false;
+       }
+       else{
+        return true;
+       }
     }
-module.exports={Userfields,test,Id};
+    
+
+module.exports = { SaveRegistrationForm, GetAllRegistrationDocuments, Id, GetRegistrationFormDocumentFromUsername, GetRegistrationusername };

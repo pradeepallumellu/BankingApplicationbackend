@@ -10,7 +10,7 @@ db.once("open", function () {
     console.log("Connected successfully to Mongo DB AccountServices");
 });
 
-async function Accountdetails(uniqueId,name){
+async function CreateAccountdetails(uniqueId,name){
     var accnumber=Date.now();
 
 const newAccount= new Accdetails({
@@ -26,4 +26,4 @@ return newAcc;
 }
 
 
-module.exports={Accountdetails};
+module.exports={CreateAccountdetails};
