@@ -57,15 +57,15 @@ async function GetRegistrationFormDocumentFromUsername(userNameFromClient) {
 }
 
 async function GetRegistrationusername(clientusername) {
-    var usernameexists=await userSchema.exists({ username: clientusername });
+    var usernameexists = await userSchema.exists({ username: clientusername });
     console.log(usernameexists);
-       if(usernameexists){
+    if (usernameexists) {
         return false;
-       }
-       else{
-        return true;
-       }
     }
-    
+    else {
+        return true;
+    }
+}
+
 
 module.exports = { SaveRegistrationForm, GetAllRegistrationDocuments, Id, GetRegistrationFormDocumentFromUsername, GetRegistrationusername };

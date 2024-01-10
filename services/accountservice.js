@@ -1,6 +1,6 @@
 const Accdetails=require('../schemas/accountdetailsschema');
 const mongoose = require("mongoose");
-const{Id}=require('./registrationformservice');
+
 
 mongoose.connect('mongodb://localhost:27017/Bank');
 
@@ -17,6 +17,7 @@ const newAccount= new Accdetails({
     Bankname:'MiruBank',
     Branch:'KTDM Branch',
     IFSCcode: 'IFSC000023',
+    accountBalance:0,
     AccNo:accnumber,
     userId:uniqueId,
     username:name
@@ -25,5 +26,8 @@ const newAcc=await newAccount.save();
 return newAcc;
 }
 
-
-module.exports={CreateAccountdetails};
+async function Accountusername(name){
+    const accountusername=await Accdetails.findOne({username:name});
+    return accountusername;
+}
+module.exports={CreateAccountdetails,Accountusername};

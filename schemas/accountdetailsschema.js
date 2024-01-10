@@ -25,6 +25,10 @@ username:{
     type:String,
     required:true,
 },
+accountBalance:{
+    type:Number,
+    default:0,
+}
 });
 
 const Accdetails=mongoose.model("Accdetails",accdetailsSchema);
