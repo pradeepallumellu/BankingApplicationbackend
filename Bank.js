@@ -1,9 +1,10 @@
 const express = require('express');
 const cors = require("cors");
 const { SaveRegistrationForm, GetAllRegistrationDocuments, GetRegistrationusername } = require('./services/registrationformservice');
-const { CreateAccountdetails, Accountusername } = require('./services/accountservice');
+const { CreateAccountdetails, Accountusername, Accountnumber, AccountbalUpdate } = require('./services/accountservice');
 const { CheckLoginfields } = require('./services/loginservice');
 const { SaveBeneficiarydetails, NameandAccountUserIdExists } = require('./services/beneficiaryservice');
+const { DepositedAmount } = require('./services/depositservice')
 
 const app = express();
 app.use(express.json());
@@ -39,9 +40,7 @@ app.post("/createregistrationform", async (req, res) => {
         }
         else {
             res.json('User Name Already exists');
-
         }
-
     }
     catch (error) {
         res.status(500).send(error);
@@ -93,11 +92,24 @@ app.post("/beneficiarycreation", async (request, response) => {
         else {
             response.json("Beneficiary Alredy Exists");
         }
-            
+    }
+    catch (error) {
+        response.status(500).send(error);
+    }
+});
+
+app.post("/deposits", async (request, response) => {
+    try {
+        const accountnumberdocument = await Accountnumber(request.body.AccNo);
+        // response.json(accountnumberdocument);
+        const accbal = DepositedAmount(request.body.depositamount, accountnumberdocument.accountBalance);
+        const Accbalanceupdate = await AccountbalUpdate(request.body.AccNo, accbal);
+        
+        var resposeObj = { message: "deposited successfully", Accountbalance: Accbalanceupdate.accountBalance };
+        response.json(resposeObj);
 
     }
     catch (error) {
         response.status(500).send(error);
     }
-})
-
+});
