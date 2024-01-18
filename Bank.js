@@ -3,8 +3,9 @@ const cors = require("cors");
 const { SaveRegistrationForm, GetAllRegistrationDocuments, GetRegistrationusername } = require('./services/registrationformservice');
 const { CreateAccountdetails, Accountusername, Accountnumber, AccountbalUpdate } = require('./services/accountservice');
 const { CheckLoginfields } = require('./services/loginservice');
-const { SaveBeneficiarydetails, NameandAccountUserIdExists } = require('./services/beneficiaryservice');
-const { DepositedAmount } = require('./services/depositservice')
+const { SaveBeneficiarydetails, NameandAccountUserIdExists, GetdocumentsUsingAccuserid, GetdocumentUsingAccountnumber } = require('./services/beneficiaryservice');
+const { DepositedAmount } = require('./services/depositservice');
+const { TransferAmount } = require('./services/transferservice');
 
 const app = express();
 app.use(express.json());
@@ -104,7 +105,7 @@ app.post("/deposits", async (request, response) => {
         // response.json(accountnumberdocument);
         const accbal = DepositedAmount(request.body.depositamount, accountnumberdocument.accountBalance);
         const Accbalanceupdate = await AccountbalUpdate(request.body.AccNo, accbal);
-        
+
         var resposeObj = { message: "deposited successfully", Accountbalance: Accbalanceupdate.accountBalance };
         response.json(resposeObj);
 
@@ -112,4 +113,35 @@ app.post("/deposits", async (request, response) => {
     catch (error) {
         response.status(500).send(error);
     }
+});
+
+app.post("/getbeneficiaries", async (request, response) => {
+    try {
+        const useridaccount = await GetdocumentsUsingAccuserid(request.body.Accuserid);
+
+        response.json(useridaccount);
+    }
+    catch (error) {
+        response.status(500).send(error);
+    }
+});
+
+app.post("/transferamount", async (request, response) => {
+    try {
+        const accountnumberdocument = await Accountnumber(request.body.AccNo);
+        const transferAmount = TransferAmount(request.body.Amounttransfer, accountnumberdocument.accountBalance);
+        // response.json(transferAmount);
+        const AccbalanceupdateafterTransferAmount = await AccountbalUpdate(request.body.AccNo, transferAmount);
+        // response.json(AccbalanceupdateafterTransferAmount);
+        const beneficiaryAccnumberdocument = await GetdocumentUsingAccountnumber(request.body.AccNumber);
+        const BeneficiaryAccountdocument = await Accountnumber(request.body.AccNumber);
+        const depositamounttoBeneficiary = DepositedAmount(request.body.Amounttransfer, BeneficiaryAccountdocument.accountBalance);
+        const Aftertransferaccupdate = await AccountbalUpdate(BeneficiaryAccountdocument.AccNo,depositamounttoBeneficiary);
+        response.json("success");
+    }
+
+    catch (error) {
+        response.status(500).send(error);
+    }
+
 });

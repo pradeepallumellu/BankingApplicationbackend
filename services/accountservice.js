@@ -42,4 +42,5 @@ async function AccountbalUpdate(accno, balofacc) {
     return updatedbalancedocument;
 
 }
+
 module.exports = { CreateAccountdetails, Accountusername, Accountnumber, AccountbalUpdate };
