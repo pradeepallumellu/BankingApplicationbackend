@@ -137,7 +137,9 @@ app.post("/transferamount", async (request, response) => {
         const BeneficiaryAccountdocument = await Accountnumber(request.body.AccNumber);
         const depositamounttoBeneficiary = DepositedAmount(request.body.Amounttransfer, BeneficiaryAccountdocument.accountBalance);
         const Aftertransferaccupdate = await AccountbalUpdate(BeneficiaryAccountdocument.AccNo,depositamounttoBeneficiary);
-        response.json("success");
+        var transferObj = {message:"transfersuccessfully",Accountbalanceaftertransfer:AccbalanceupdateafterTransferAmount.accountBalance }
+        response.json(transferObj);
+
     }
 
     catch (error) {
