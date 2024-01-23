@@ -42,5 +42,15 @@ async function AccountbalUpdate(accno, balofacc) {
     return updatedbalancedocument;
 
 }
+async function AccountUseridExists(userid){
+const useridexists=await Accdetails.exists({userId:userid});
 
-module.exports = { CreateAccountdetails, Accountusername, Accountnumber, AccountbalUpdate };
+if(useridexists){
+    return true;
+}
+else{
+    return false;
+}
+}
+
+module.exports = { CreateAccountdetails, Accountusername, Accountnumber, AccountbalUpdate, AccountUseridExists };

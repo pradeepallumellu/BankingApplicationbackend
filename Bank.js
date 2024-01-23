@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require("cors");
 const { SaveRegistrationForm, GetAllRegistrationDocuments, GetRegistrationusername } = require('./services/registrationformservice');
-const { CreateAccountdetails, Accountusername, Accountnumber, AccountbalUpdate } = require('./services/accountservice');
+const { CreateAccountdetails, Accountusername, Accountnumber, AccountbalUpdate, AccountUseridExists } = require('./services/accountservice');
 const { CheckLoginfields } = require('./services/loginservice');
 const { SaveBeneficiarydetails, NameandAccountUserIdExists, GetdocumentsUsingAccuserid, GetdocumentUsingAccountnumber } = require('./services/beneficiaryservice');
 const { DepositedAmount } = require('./services/depositservice');
@@ -136,8 +136,8 @@ app.post("/transferamount", async (request, response) => {
         const beneficiaryAccnumberdocument = await GetdocumentUsingAccountnumber(request.body.AccNumber);
         const BeneficiaryAccountdocument = await Accountnumber(request.body.AccNumber);
         const depositamounttoBeneficiary = DepositedAmount(request.body.Amounttransfer, BeneficiaryAccountdocument.accountBalance);
-        const Aftertransferaccupdate = await AccountbalUpdate(BeneficiaryAccountdocument.AccNo,depositamounttoBeneficiary);
-        var transferObj = {message:"transfersuccessfully",Accountbalanceaftertransfer:AccbalanceupdateafterTransferAmount.accountBalance }
+        const Aftertransferaccupdate = await AccountbalUpdate(BeneficiaryAccountdocument.AccNo, depositamounttoBeneficiary);
+        var transferObj = { message: "transfersuccessfully", Accountbalanceaftertransfer: AccbalanceupdateafterTransferAmount.accountBalance }
         response.json(transferObj);
 
     }
@@ -145,5 +145,15 @@ app.post("/transferamount", async (request, response) => {
     catch (error) {
         response.status(500).send(error);
     }
+});
 
+app.get("/logout", async (request, response) => {
+    try {
+        var userid=request.query.userId;
+        var existuserid= await  AccountUseridExists(userid);
+        response.json( existuserid);
+    }
+    catch (error) {
+        response.status(500).send(error);
+    }
 });
