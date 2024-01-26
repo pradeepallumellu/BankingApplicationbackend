@@ -39,4 +39,9 @@ async function GetdocumentUsingAccountnumber(accnumber){
 const beneficiaryDocument = await beneficiarySchema.findOne({AccNumber:accnumber});
 return beneficiaryDocument;
 }
-module.exports = { SaveBeneficiarydetails, NameandAccountUserIdExists, GetdocumentsUsingAccuserid,GetdocumentUsingAccountnumber};
+
+async function BeneficiaryAccDeletion(accno){
+  const accdeletion= await beneficiarySchema.deleteOne({AccNumber:accno});
+  return accdeletion;
+}
+module.exports = { SaveBeneficiarydetails, NameandAccountUserIdExists, GetdocumentsUsingAccuserid,GetdocumentUsingAccountnumber, BeneficiaryAccDeletion};

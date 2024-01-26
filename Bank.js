@@ -3,7 +3,7 @@ const cors = require("cors");
 const { SaveRegistrationForm, GetAllRegistrationDocuments, GetRegistrationusername } = require('./services/registrationformservice');
 const { CreateAccountdetails, Accountusername, Accountnumber, AccountbalUpdate, AccountUseridExists } = require('./services/accountservice');
 const { CheckLoginfields } = require('./services/loginservice');
-const { SaveBeneficiarydetails, NameandAccountUserIdExists, GetdocumentsUsingAccuserid, GetdocumentUsingAccountnumber } = require('./services/beneficiaryservice');
+const { SaveBeneficiarydetails, NameandAccountUserIdExists, GetdocumentsUsingAccuserid, GetdocumentUsingAccountnumber,BeneficiaryAccDeletion } = require('./services/beneficiaryservice');
 const { DepositedAmount } = require('./services/depositservice');
 const { TransferAmount } = require('./services/transferservice');
 
@@ -149,9 +149,23 @@ app.post("/transferamount", async (request, response) => {
 
 app.get("/logout", async (request, response) => {
     try {
-        var userid=request.query.userId;
-        var existuserid= await  AccountUseridExists(userid);
-        response.json( existuserid);
+        var userid = request.query.userId;
+        var existuserid = await AccountUseridExists(userid);
+        response.json(existuserid);
+    }
+    catch (error) {
+        response.status(500).send(error);
+    }
+});
+
+app.delete("/beneficiarydeletion", async (request, response) => {
+    try {
+        var delebybenes = request.query.AccNumber;
+        var accbensdeletion = await BeneficiaryAccDeletion(delebybenes);
+        // response.json(accbensdeletion);
+        var accuserid = request.body.Accuserid
+        var getbenesdoc=await GetdocumentsUsingAccuserid(accuserid);
+        response.json(getbenesdoc);
     }
     catch (error) {
         response.status(500).send(error);
