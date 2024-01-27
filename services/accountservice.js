@@ -1,8 +1,9 @@
 const Accdetails = require('../schemas/accountdetailsschema');
 const mongoose = require("mongoose");
+const configuration = require('../config')
 
 
-mongoose.connect('mongodb://localhost:27017/Bank');
+mongoose.connect(configuration.mangoDbConnectionString);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));

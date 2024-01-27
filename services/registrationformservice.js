@@ -1,8 +1,9 @@
 const userSchema = require('../schemas/registrationschema');
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
+const configuration = require('../config')
 
-mongoose.connect('mongodb://localhost:27017/Bank');
+mongoose.connect(configuration.mangoDbConnectionString);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));

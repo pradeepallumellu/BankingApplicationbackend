@@ -1,6 +1,8 @@
 const beneficiarySchema = require('../schemas/beneficiary');
 const mongoose = require("mongoose");
-mongoose.connect('mongodb://localhost:27017/Bank');
+const configuration = require('../config')
+
+mongoose.connect(configuration.mangoDbConnectionString);
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
