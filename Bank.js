@@ -16,6 +16,10 @@ app.listen(PORT, () => {
     console.log("Node server started", PORT);
 });
 
+app.get("/test", async (request, response) => {
+    response.json("Test Successfull");
+});
+
 app.get("/getregistrationform", async (request, response) => {
     var y = await GetAllRegistrationDocuments();
     try {
