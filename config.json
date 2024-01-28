@@ -1,3 +1,0 @@
-{
-    "mangoDbConnectionString":"mongodb://mirubank-server:1INO3MHhVcDIbfjFRVEP3xZZZDKw4ClxBn5VKg95khGA2VlerqMxGUTQnvFKCJvgpI567R7qJvmbACDbFMSDVg==@mirubank-server.mongo.cosmos.azure.com:10255/mirubank-database?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@mirubank-server@"
-}
