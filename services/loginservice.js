@@ -3,6 +3,7 @@ const { GetRegistrationFormDocumentFromUsername } = require('./registrationforms
 
 async function CheckLoginfields(username, pwd) {
     var registrationformdocument = await GetRegistrationFormDocumentFromUsername(username);
+
     console.log(registrationformdocument);
     if (registrationformdocument.password == pwd) {
         return true;
